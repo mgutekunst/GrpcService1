@@ -22,5 +22,21 @@ namespace GrpcService1
                 Message = "Hello " + request.Name
             });
         }
+        public override async Task SayHelloStream(HelloRequest request, IServerStreamWriter<HelloReply> responseStream, ServerCallContext context)
+        {
+            var test = new string[] { "Hello", "Hi", "Hallo", "Tag"," N'Abend" };
+
+            var index = 0;
+            while (true)
+            {
+                if (context.CancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+                await responseStream.WriteAsync(new HelloReply { Message = test[index] } );
+                index = (index + 1) % test.Length;
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+        }
     }
 }

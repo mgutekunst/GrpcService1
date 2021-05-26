@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     private greeterClient: GreeterClient
   ) {
 
-    this.greetings$ = this.greeterClient.sayHello(new HelloRequest())
+    this.greetings$ = this.greeterClient.sayHelloStream(new HelloRequest())
     .pipe(tap(d => console.log('received', d)),
     map(d => d.message));
   }

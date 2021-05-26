@@ -53,6 +53,27 @@ export class GreeterClient {
         requestClass: thisProto.HelloRequest,
         responseClass: thisProto.HelloReply
       });
+    },
+    /**
+     * Server streaming RPC for /greet.Greeter/SayHelloStream
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.HelloReply>>
+     */
+    sayHelloStream: (
+      requestData: thisProto.HelloRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.HelloReply>> => {
+      return this.handler.handle({
+        type: GrpcCallType.serverStream,
+        client: this.client,
+        path: '/greet.Greeter/SayHelloStream',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.HelloRequest,
+        responseClass: thisProto.HelloReply
+      });
     }
   };
 
@@ -77,6 +98,22 @@ export class GreeterClient {
   ): Observable<thisProto.HelloReply> {
     return this.$raw
       .sayHello(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Server streaming RPC for /greet.Greeter/SayHelloStream
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.HelloReply>
+   */
+  sayHelloStream(
+    requestData: thisProto.HelloRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.HelloReply> {
+    return this.$raw
+      .sayHelloStream(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

@@ -33,7 +33,7 @@ namespace GrpcService1
                 {
                     break;
                 }
-                await responseStream.WriteAsync(new HelloReply { Message = test[index] } );
+                await responseStream.WriteAsync(new HelloReply { Message = test[index] + " " + request.Name } );
                 index = (index + 1) % test.Length;
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }

@@ -1,6 +1,11 @@
 <h2>I am empty</h2>
 
 <div>
+  <span>Enter your Name</span>
+  <input type="text" [(ngModel)]="name" >
+</div>
+
+<div>
   {{(greetings$ | async)}}
 </div>
 <router-outlet></router-outlet>
